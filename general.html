@@ -1216,10 +1216,10 @@
 
                         <!-- BEGIN FOOTER // -->
                         <tr>
-                          <td valign="top" id="templateFooter" bgcolor="#f1f2f6">
-                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                          <td valign="top" id="templateFooter">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#f1f2f6">
                               <tr>
-                                <td valign="bottom" align="center">
+                                <td valign="bottom" align="center" style="padding-top: 20px;">
                                   <p style="margin: 0 0 2px; font-family:'PT Sans', sans-serif; color: #656565; font-size: 16px;">
                                     Este correo fue enviado por el departamento de clasificados La opinión
                                   </p>																			
@@ -1254,15 +1254,25 @@
             </tr>
         </table>
     </center>
+
+    <sectionform>
+      <iframe id="code" src="./general.html" frameborder="0" style="display: none;"></iframe>
+      <form id="form__html" style="  display: flex; justify-content: center;">
+        <h3 class="message">Generando código...</h3>
+        <textarea id="texto__html" cols="100" rows="50" style="display: none;"></textarea>
+      </form>
+    </sectionform>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
-      const urlService = 'https://clasificados.laopinion.com.co/api/v2/views/Mailchimp?display_id=services_5';
-      const urlService2 = 'https://clasificados.laopinion.com.co/api/v2/views/Mailchimp?display_id=services_6';
-      const urlService3 = 'https://clasificados.laopinion.com.co/api/v2/views/Mailchimp?display_id=services_7';
-      const urlService4 = 'https://clasificados.laopinion.com.co/api/v2/views/Mailchimp?display_id=services_8';
+      let urlService = 'https://clasificados.laopinion.com.co/api/v2/views/Mailchimp?display_id=services_5';
+      let urlService2 = 'https://clasificados.laopinion.com.co/api/v2/views/Mailchimp?display_id=services_6';
+      let urlService3 = 'https://clasificados.laopinion.com.co/api/v2/views/Mailchimp?display_id=services_7';
+      let urlService4 = 'https://clasificados.laopinion.com.co/api/v2/views/Mailchimp?display_id=services_8';
   
-       // Primer bloque
-       $.ajax({
+    
+    $(function(){ 
+      // Primer bloque
+      $.ajax({
         type: 'GET', 
         url: urlService, 
         dataType: 'jsonp',
@@ -1306,7 +1316,7 @@
             $(title).html(element.node_title);
             $(titleHref).css({ 'text-decoration': 'none', 'color': '#57606f'});
             $(titleHref).attr('href', `https://clasificados.laopinion.com.co${element.path}`);
-            console.log(verAnuncio)
+            // console.log(verAnuncio)
   
             $(verAnuncio).attr('href', `https://clasificados.laopinion.com.co${element.path}`);
   
@@ -1333,7 +1343,7 @@
             $(title).html(element.node_title);
             $(titleHref).css({ 'text-decoration': 'none', 'color': '#57606f'});
             $(titleHref).attr('href', `https://clasificados.laopinion.com.co${element.path}`);
-            console.log(verAnuncio)
+            // console.log(verAnuncio)
   
             $(verAnuncio).attr('href', `https://clasificados.laopinion.com.co${element.path}`);
   
@@ -1360,7 +1370,7 @@
             $(title).html(element.node_title);
             $(titleHref).css({ 'text-decoration': 'none', 'color': '#57606f'});
             $(titleHref).attr('href', `https://clasificados.laopinion.com.co${element.path}`);
-            console.log(verAnuncio)
+            // console.log(verAnuncio)
   
             $(verAnuncio).attr('href', `https://clasificados.laopinion.com.co${element.path}`);
   
@@ -1369,7 +1379,27 @@
           });
         }
       });
-  </script>
-</body>
 
+      setTimeout(() => {
+        $('#texto__html').show();
+        $('#form__html .message').hide();
+
+        const html = $('#code').contents().find("html").html();
+
+        $('#form__html #texto__html').text(
+          `<!doctype html>
+            <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">   
+              ${html}
+            </html>
+          `);
+        const text = $('#form__html #texto__html').text()
+        const SCRIPT_REGEX = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
+        const SECTION_REGEX = /<sectionform\b[^<]*(?:(?!<\/sectionform>)<[^<]*)*<\/sectionform>/gi;
+        let stripText = text.replace(SCRIPT_REGEX, "");
+        stripText = stripText.replace(SECTION_REGEX, "");
+        $('#form__html #texto__html').text(stripText)
+      }, 5000);
+    });
+  </script>
+  </body>
 </html>
