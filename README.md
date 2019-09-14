@@ -1,4 +1,4 @@
-# Email-clasificados-edictos
+# email-clasificados-edictos
 
 * Template empleos [abrir](https://laopinion.github.io/email-clasificados-edictos/empleos.html).
 
